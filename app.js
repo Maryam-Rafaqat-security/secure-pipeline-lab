@@ -2,6 +2,12 @@ const express = require('express');
 const _ = require('lodash');
 const { exec } = require('child_process');
 const app = express();
+const express = require('express');
+const _ = require('lodash');
+const { exec } = require('child_process');
+const app = express();
+const helmet = require('helmet');
+app.use(helmet());
 const DB_PASSWORD = 'admin123'; // Problem: hard-coded password
 app.get('/', (req, res) => {
  res.send('<h1>Student Portal</h1><a href="/hello?name=Ali">Say hello</a>');
