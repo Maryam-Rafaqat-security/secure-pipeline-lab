@@ -62,3 +62,28 @@ jobs:
 
       - name: Check libraries for known vulnerabilities
         run: npm audit --audit-level=high
+
+  dast:
+    name: DAST (OWASP ZAP)
+    runs-on: ubuntu-latest
+    needs: build # run only after build and test pass
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install and start the app
+        run: |
+          npm ci
+          npm start &
+          for i in $(seq 1 20); do curl -s http://localhost:3000 && break; sleep 1; done
+
+      - name: Run ZAP baseline scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: "http://localhost:3000"
+          allow_issue_writing: false
