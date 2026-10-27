@@ -6,6 +6,9 @@ const app = express();
 const helmet = require('helmet');
 app.use(helmet());
 
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({ windowMs: 60 * 1000, limit: 100 });
+
 const DB_PASSWORD = 'admin123'; // Problem: hard-coded password
 
 app.get('/', (req, res) => {
@@ -32,7 +35,8 @@ app.get('/merge', (req, res) => {
 });
 
 // New feature: search students by name
-app.get('/search', (req, res) => {
+app.get('/search', limiter, (req, res) => {
   res.type('text/plain').send('Results for: ' + req.query.q);
 });
+
 app.listen(3000, () => console.log('App running on http://localhost:3000'));
