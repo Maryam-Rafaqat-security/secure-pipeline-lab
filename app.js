@@ -31,4 +31,9 @@ app.get('/merge', (req, res) => {
   res.json(_.merge({}, { course: 'SE' }));
 });
 
+// New feature: search students by name
+app.get('/search', (req, res) => {
+  res.send('<p>Results for: ' + req.query.q + '</p>');
+});
+
 app.listen(3000, () => console.log('App running on http://localhost:3000'));
