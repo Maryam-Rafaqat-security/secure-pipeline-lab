@@ -36,7 +36,6 @@ app.get('/merge', (req, res) => {
 
 // New feature: search students by name
 app.get('/search', limiter, (req, res) => {
-  res.type('text/plain').send('Results for: ' + req.query.q);
+  res.json({ results: 'Results for: ' + req.query.q });
 });
-
 app.listen(3000, () => console.log('App running on http://localhost:3000'));
